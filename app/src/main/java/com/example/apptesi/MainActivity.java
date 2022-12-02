@@ -15,7 +15,9 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private Button btn_sub;
+    private Button btn_unsub;
     private Button btn_pub;
+
 
     private static final String TAG = "MainActivity";
     private String topic, clientID;
@@ -35,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     public void init() {
         btn_sub = findViewById(R.id.btn_sub);
         btn_pub = findViewById(R.id.btn_pub);
+        btn_unsub = findViewById(R.id.btn_unsub);
 
         clientID = MqttClient.generateClientId();
         topic="prova/topic";
         client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.15.1:1883",
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://192.168.1.25:1883",
                         clientID);
         btn_sub.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
@@ -51,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 publish();
             }
         });
+        btn_unsub.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                unsub();
+            }
+        });
+
     }
 
     private void connectx(){
@@ -121,4 +130,28 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void unsub(){
+        try {
+            IMqttToken unsubToken = client.unsubscribe(topic);
+            unsubToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // The subscription could successfully be removed from the client
+                    Log.d(TAG,  "Unsub: onSucces");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken,
+                                      Throwable exception) {
+                    Log.d(TAG,  "Unsub: onFailure");
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

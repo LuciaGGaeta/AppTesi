@@ -20,4 +20,11 @@
         android:text="Publish"
         tools:layout_editor_absoluteX="310dp"
         tools:layout_editor_absoluteY="144dp" />
+    <Button
+        android:id="@+id/btn_unsub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unsubscribe"
+        tools:layout_editor_absoluteX="310dp"
+        tools:layout_editor_absoluteY="144dp" />
 </LinearLayout>
